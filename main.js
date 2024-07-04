@@ -5,16 +5,18 @@ let taskList = [];
 let mode = "all";
 let filterList = [];
 let underLine = document.getElementById("under-line");
-let horizontalTabs = document.querySelectorAll(".task-tabs div:not(#under-line)");
+let horizontalTabs = document.querySelectorAll(
+  ".task-tabs div:not(#under-line)"
+);
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   let firstTab = document.getElementById("all");
   underLine.style.left = firstTab.offsetLeft + "px";
   underLine.style.width = firstTab.offsetWidth + "px";
   underLine.style.bottom = "0px";
 });
 
-taskInput.addEventListener("keypress", function(event) {
+taskInput.addEventListener("keypress", function (event) {
   if (event.key === "Enter") {
     addTask();
   }
@@ -25,7 +27,7 @@ addButton.addEventListener("click", addTask);
 for (let i = 1; i < tabs.length; i++) {
   tabs[i].addEventListener("click", function (event) {
     filter(event);
-  })
+  });
 }
 
 function addTask() {
@@ -85,28 +87,33 @@ function toggleComplete(id) {
       break;
     }
   }
+  filterList = taskList.filter((task) => {
+    if (mode === "ongoing") {
+      return !task.isComplete;
+    } else if (mode === "done") {
+      return task.isComplete;
+    }
+  });
   render();
   console.log(taskList);
 }
 
 function deleteTask(id) {
-    for(let i = 0; i < taskList.length; i++) {
-        if(taskList[i].id == id) {
-            taskList.splice(i, 1);
-            break;
-        }
+  for (let i = 0; i < taskList.length; i++) {
+    if (taskList[i].id == id) {
+      taskList.splice(i, 1);
+      break;
     }
-
-    if (mode === "ongoing" || mode === "done") {
-      filterList = taskList.filter(task => {
-          if (mode === "ongoing") {
-              return !task.isComplete;
-          } else if (mode === "done") {
-              return task.isComplete;
-          }
-      });
   }
-  
+
+  filterList = taskList.filter((task) => {
+    if (mode === "ongoing") {
+      return !task.isComplete;
+    } else if (mode === "done") {
+      return task.isComplete;
+    }
+  });
+
   render();
 }
 
@@ -123,7 +130,7 @@ function filter(event) {
       }
     }
     render();
-  } else if(mode === "done") {
+  } else if (mode === "done") {
     // 끝나는 케이스
     for (let i = 0; i < taskList.length; i++) {
       if (taskList[i].isComplete === true) {
